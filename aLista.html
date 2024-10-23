@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8">
+    <title>Lista de Tarefas</title> 
+    
+    <style>
+        h1{
+            font-style: italic;
+        }
+        #listaDeTarefas {
+            list-style-type: circle;
+        }
+        .concluida { 
+            color: gray; 
+            list-style-type: disc;
+            opacity: 0.5;
+        } 
+    </style> 
+</head> 
+
+<body>
+    <h1>Lista de Tarefas</h1>
+    <input type="text" id="novaTarefa" placeholder="Nova Tarefa"> 
+    <button id="adicionarTarefa">+</button>
+    <ul id="listaDeTarefas"></ul>
+    
+    <script>
+        const buttonAdd = document.getElementById('adicionarTarefa');//+
+        const input = document.getElementById('novaTarefa');        //campo input
+        const lista = document.getElementById('listaDeTarefas');    // ul
+        
+        buttonAdd.addEventListener('click', () => {       
+            const tarefa = document.createElement('li');            // cria item da lista
+            tarefa.innerHTML = `
+                <span contenteditable="false">${input.value}</span>
+                <button class="concluir">Concluir</button>
+                <button class="deletar">Deletar</button>
+            `;
+            lista.appendChild(tarefa);
+            input.value = '';
+        }); 
+
+        lista.addEventListener('click', (event) => {
+            if (event.target.classList.contains('deletar')) {
+                event.target.parentNode.remove();                   // remove o item
+            } else if (event.target.classList.contains('concluir')) {
+                const tarefaItem = event.target.parentNode;         // pega o item da lista
+                tarefaItem.classList.toggle('concluida');           // remove/coloca a classe concluida css
+
+                const concluirBotao = event.target;                 // update botao pro css
+                concluirBotao.textContent = tarefaItem.classList.contains('concluida')
+                ? 'Refazer' : 'Concluir';                           // se concluida=true, "refazer" e item volta
+            }
+        });
+
+
+    </script> 
+</body> 
+</html> 
